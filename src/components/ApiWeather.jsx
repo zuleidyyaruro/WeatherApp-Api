@@ -12,7 +12,7 @@ const ApiWeather = ({ latitude, longitude }) => {
 
     const getData = () => {
 
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=cb3ea64fae4a245a7a60680ab792be36`)
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=9bce75cbece1baa801bd19ab6cf4fc54&units=metric`)
             .then((response) => response.json())
             .then((data) => handleChangeArrayData(data))
     }
@@ -22,7 +22,7 @@ const ApiWeather = ({ latitude, longitude }) => {
             city: data.name,
             country: codeCountry(data),
             weatherDescription: data.weather[0].description,
-            temperature:data.main.temp,
+            temperature:(data.main.temp).toString(),
             icon: data.weather[0].icon,
             windSpeed: data.wind.speed,
             clouds: data.clouds.all,

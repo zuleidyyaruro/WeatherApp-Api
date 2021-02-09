@@ -6,48 +6,40 @@ import { faCloud, faAngleDoubleRight, faWind, faThermometerThreeQuarters } from 
 import CountryCity from "./CountryCity";
 import ImageWeather from "./ImageWeather";
 import InfoWeather from "./InfoWeather";
-import ConvertDegrees from "./ConvertDegrees";
+
 
 const WeatherLayout = ({ arrayInfo }) => {
 
     const { city, country, weatherDescription, icon, windSpeed, clouds, pressure, temperature } = arrayInfo;
 
-    const [temps, settemps] = useState({
-        data: [temperature - 273.15],
-        aux: true,
-        grade: "°C",
-    });
+    const [temperature_, setTemperature_] = useState()
+    const [temIsCelcius, setTemIsCelcius] = useState(true);
+    const [degrees, setDegrees] = useState("°C");
 
-    const Degrees = () => {
-        const [data] = temps.data;
-        if (temps.aux) {
-            settemps({
-                data: [(data * 9) / 5 + 32],
-                aux: false,
-                grade: "°F",
-            });
-        } else {
-            settemps({
-                data: [((data - 32) * 5) / 9],
-                aux: true,
-                grade: "°C",
-            });
+    const handleChangeTemperature=()=>{
+
+        setTemIsCelcius(!temIsCelcius);
+        setTemperature_((temperature *(9/5))+32);
+
+        if(temIsCelcius){
+            setDegrees("°F");
+        }else{
+            setDegrees("°C");
         }
-    };
+    }
 
 
     return (
         <div className="border container-api ">
 
             <h1>Weather App</h1>
-            <CountryCity country={country} city={city} />
+            <CountryCity handleChangeTemperature country={country} city={city} />
             <ImageWeather icon={icon} />
 
-           
             <p className="p-icon">
-            {`${temps.data[0]}`}{" "}
-            <span className="span-p">{`${temps.grade}`}</span>
-          </p>
+                <span>{temIsCelcius ? temperature: temperature_} </span>
+                <span className="span-p">{degrees}</span>
+            </p>
 
             <div className="property-name">
                 <FontAwesomeIcon icon={faAngleDoubleRight} /> <InfoWeather style={{ textTransform: "capitalize" }} property={weatherDescription} />
@@ -62,7 +54,7 @@ const WeatherLayout = ({ arrayInfo }) => {
                 <FontAwesomeIcon icon={faThermometerThreeQuarters} /> <InfoWeather textComplement="mb" text="Pressure: " property={pressure} />
             </div>
 
-            <ConvertDegrees handle={Degrees} />
+            <button onClick={handleChangeTemperature}>Degrees °F / °C</button>
 
         </div>
     );
