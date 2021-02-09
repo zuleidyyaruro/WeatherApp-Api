@@ -12,7 +12,7 @@ const ApiWeather = ({ latitude, longitude }) => {
 
     const getData = () => {
 
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=e91b910bed5cbd8d49b26b384c197ded&units=metric`)
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=cb3ea64fae4a245a7a60680ab792be36`)
             .then((response) => response.json())
             .then((data) => handleChangeArrayData(data))
     }

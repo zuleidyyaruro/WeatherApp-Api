@@ -12,14 +12,45 @@ const WeatherLayout = ({ arrayInfo }) => {
 
     const { city, country, weatherDescription, icon, windSpeed, clouds, pressure, temperature } = arrayInfo;
 
+    const [temps, settemps] = useState({
+        data: [temperature - 273.15],
+        aux: true,
+        grade: "°C",
+    });
+
+    const Degrees = () => {
+        const [data] = temps.data;
+        if (temps.aux) {
+            settemps({
+                data: [(data * 9) / 5 + 32],
+                aux: false,
+                grade: "°F",
+            });
+        } else {
+            settemps({
+                data: [((data - 32) * 5) / 9],
+                aux: true,
+                grade: "°C",
+            });
+        }
+    };
+
+
     return (
         <div className="border container-api ">
 
             <h1>Weather App</h1>
             <CountryCity country={country} city={city} />
             <ImageWeather icon={icon} />
+
+           
+            <p className="p-icon">
+            {`${temps.data[0]}`}{" "}
+            <span className="span-p">{`${temps.grade}`}</span>
+          </p>
+
             <div className="property-name">
-                <FontAwesomeIcon icon={faAngleDoubleRight} /> <InfoWeather style={{textTransform: "capitalize"}}  property={weatherDescription} />
+                <FontAwesomeIcon icon={faAngleDoubleRight} /> <InfoWeather style={{ textTransform: "capitalize" }} property={weatherDescription} />
             </div>
             <div className="property-name">
                 <FontAwesomeIcon icon={faWind} /> <InfoWeather textComplement="m/s" text="Wind Speed: " property={windSpeed} />
@@ -31,7 +62,7 @@ const WeatherLayout = ({ arrayInfo }) => {
                 <FontAwesomeIcon icon={faThermometerThreeQuarters} /> <InfoWeather textComplement="mb" text="Pressure: " property={pressure} />
             </div>
 
-            <ConvertDegrees/>
+            <ConvertDegrees handle={Degrees} />
 
         </div>
     );
